@@ -4,9 +4,9 @@ public class Placer {
     private final int BOARD_X, BOARD_Y;
     private final Brick[] BRICKS;
     private final int[] NUM_OF_BRICKS;
-    private final Integer[][] RESULT;
     private final Boolean[][] BOARD;
     private boolean unfinished = true;
+    private Integer[][] result;
     private int index = 1;
 
     private Placer(int boardX, int boardY, Brick[] bricks, int[] numOfBricks) {
@@ -14,7 +14,6 @@ public class Placer {
         BOARD_Y = boardY;
         BRICKS = bricks;
         NUM_OF_BRICKS = numOfBricks;
-        RESULT = new Integer[BOARD_Y][BOARD_X];
         BOARD = new Boolean[BOARD_Y][BOARD_X];
         for (int y = 0; y < BOARD_Y; y++) {
             for (int x = 0; x < BOARD_X; x++) {
@@ -28,13 +27,14 @@ public class Placer {
         if (unfinished) {
             System.out.println("No solution found.");
         } else {
-            Printer.print(BOARD_X, BOARD_Y, RESULT);
+            Printer.print(BOARD_X, BOARD_Y, result);
         }
     }
 
     private void run(int x, int y) {
         if (y == BOARD_Y) {
             unfinished = false;
+            result = new Integer[BOARD_Y][BOARD_X];
             return;
         }
         if (x == BOARD_X) {
@@ -58,7 +58,7 @@ public class Placer {
                     if (unfinished) {
                         remove(brick, rotation, x, y);
                     } else {
-                        set(RESULT, brick, rotation, x, y, index++);
+                        set(result, brick, rotation, x, y, index++);
                         return;
                     }
                 }
@@ -172,7 +172,8 @@ public class Placer {
         }
 
         public Placer build() {
-            if (numOfLL + numOfLR + numOfZL + numOfZR + numOfI + numOfO + numOfT != boardX * boardY / 4) {
+            int sum = numOfLL + numOfLR + numOfZL + numOfZR + numOfI + numOfO + numOfT;
+            if (sum == 0 || sum != boardX * boardY / 4) {
                 System.err.println("Wrong number of bricks!");
                 System.exit(1);
             }

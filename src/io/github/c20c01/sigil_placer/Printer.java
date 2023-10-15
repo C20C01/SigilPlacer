@@ -1,11 +1,11 @@
 package io.github.c20c01.sigil_placer;
 
 public class Printer {
-    private static Integer[][] RESULT;
+    private static Integer[][] result;
 
     public static void print(int board_x, int board_y, Integer[][] result) {
         Point[][] BOARD = new Point[board_y + 1][board_x + 1];
-        RESULT = result;
+        Printer.result = result;
         for (int y = 0; y <= board_y; y++) {
             for (int x = 0; x <= board_x; x++) {
                 int[] area = getArea(x - 1, y - 1);
@@ -35,7 +35,7 @@ public class Printer {
 
     private static int getID(int x, int y) {
         try {
-            return RESULT[y][x];
+            return result[y][x];
         } catch (ArrayIndexOutOfBoundsException e) {
             return 0;
         }
